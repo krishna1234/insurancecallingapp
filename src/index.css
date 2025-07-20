@@ -1,0 +1,233 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent zoom on input focus on iOS */
+  -webkit-text-size-adjust: 100%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Mobile-friendly styles */
+@media (max-width: 768px) {
+  .container-fluid {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .btn-lg {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1.1rem;
+  }
+  
+  h1.display-5 {
+    font-size: 1.8rem;
+  }
+  
+  .lead {
+    font-size: 1rem;
+  }
+}
+
+/* Touch-friendly buttons */
+.btn {
+  min-height: 44px; /* iOS recommended touch target size */
+  touch-action: manipulation;
+}
+
+.btn-sm {
+  min-height: 36px;
+}
+
+/* Card hover effects */
+.customer-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.customer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Status badges */
+.status-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Action button animations */
+.btn-group .btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-group .btn:hover {
+  transform: scale(1.05);
+}
+
+/* Icon colors for different actions */
+.icon-call {
+  color: #198754;
+}
+
+.icon-sms {
+  color: #0d6efd;
+}
+
+.icon-whatsapp {
+  color: #25d366;
+}
+
+.icon-notes {
+  color: #6c757d;
+}
+
+/* Completed action styling */
+.btn-outline-success.completed {
+  background-color: #198754;
+  border-color: #198754;
+  color: white;
+}
+
+.btn-outline-primary.completed {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: white;
+}
+
+/* PWA specific styles */
+@media (display-mode: standalone) {
+  body {
+    /* Remove browser UI when in standalone mode */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  .navbar {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* Upload area styles */
+.upload-area {
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.upload-area:hover {
+  border-color: #0d6efd !important;
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 576px) {
+  .row.g-3 > .col-12 {
+    margin-bottom: 1rem;
+  }
+  
+  .card-body {
+    padding: 0.75rem;
+  }
+  
+  .btn {
+    font-size: 0.9rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1rem;
+  }
+  
+  /* Make stats cards 2x2 grid on mobile */
+  .row.g-3 .col-6.col-md-3 {
+    width: 50%;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Smaller headings on mobile */
+  h5.card-title {
+    font-size: 1rem;
+  }
+  
+  /* Smaller alert text */
+  .alert {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  /* Adjust spacing */
+  .py-4 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Make buttons more touch-friendly */
+  .d-grid.gap-3 {
+    gap: 0.75rem !important;
+  }
+}
+
+/* Prevent text selection on buttons */
+.btn {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Improve modal on mobile */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+  
+  .modal-content {
+    border-radius: 0.5rem;
+  }
+  
+  .modal-header {
+    padding: 0.75rem;
+  }
+  
+  .modal-body, .modal-footer {
+    padding: 0.75rem;
+  }
+}

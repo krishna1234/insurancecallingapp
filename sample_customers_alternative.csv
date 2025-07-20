@@ -1,0 +1,9 @@
+name,phone,vehicleNumber,vehicle_model,brand,registration_date,insurance_expiry
+John Doe,+1234567890,ABC123,Honda City,Honda,2020-01-15,2024-12-31
+Jane Smith,+1987654321,XYZ789,Toyota Camry,Toyota,2019-06-20,2024-11-30
+Mike Johnson,+1122334455,DEF456,Maruti Swift,Maruti,2021-03-10,2024-10-15
+Sarah Wilson,+1555666777,GHI789,Hyundai i20,Hyundai,2020-08-25,2024-09-20
+David Brown,+1888999000,JKL012,Ford EcoSport,Ford,2018-12-05,2024-08-31
+Lisa Davis,+1444555666,MNO345,Volkswagen Polo,Volkswagen,2021-01-30,2024-07-25
+Robert Miller,+1777888999,PQR678,Mahindra XUV300,Mahindra,2020-05-12,2024-06-30
+Emma Taylor,+1666777888,STU901,Tata Nexon,Tata,2021-07-18,2024-05-15 
