@@ -50,6 +50,10 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
     return `Dear ${customer.ownerName}, your vehicle (${customer.make} ${customer.model}, Reg: ${customer.vehicle_number}) insurance is expiring on ${customer.vehicleInsuranceUpto}. Please contact us to renew your policy and stay protected. - Insurance Team`;
   }
 
+  const getWhatsAppMessage = (customer) => {
+    return `Dear ${customer.ownerName}, your vehicle (${customer.make} ${customer.model}, Reg: ${customer.vehicle_number}) insurance is expiring on ${customer.vehicleInsuranceUpto}. Please contact us to renew your policy and stay protected. Also, kindly share RC copy, Insurance Copy, Aadhaar card and Pan card. - Insurance Team`;
+  }
+
   const handleSMS = (customer) => {
     const message = getInsuranceMessage(customer)
     window.open(`sms:${customer.phone_number}?body=${encodeURIComponent(message)}`, '_self')
@@ -57,7 +61,7 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
   }
 
   const handleWhatsApp = (customer) => {
-    const message = getInsuranceMessage(customer)
+    const message = getWhatsAppMessage(customer)
     const whatsappUrl = `https://wa.me/${customer.phone_number.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
     handleActionComplete(customer.id, 'whatsapp')
