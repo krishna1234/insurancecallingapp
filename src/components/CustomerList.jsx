@@ -46,15 +46,19 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
     handleActionComplete(customer.id, 'called')
   }
 
+  const getInsuranceMessage = (customer) => {
+    return `Dear ${customer.ownerName}, your vehicle (${customer.make} ${customer.model}, Reg: ${customer.vehicle_number}) insurance is expiring on ${customer.vehicleInsuranceUpto}. Please contact us to renew your policy and stay protected. - Insurance Team`;
+  }
+
   const handleSMS = (customer) => {
-    const defaultMessage = "Hello! This is regarding your vehicle insurance renewal. Please call us back for more details."
-    window.open(`sms:${customer.phone_number}?body=${encodeURIComponent(defaultMessage)}`, '_self')
+    const message = getInsuranceMessage(customer)
+    window.open(`sms:${customer.phone_number}?body=${encodeURIComponent(message)}`, '_self')
     handleActionComplete(customer.id, 'sms')
   }
 
   const handleWhatsApp = (customer) => {
-    const defaultMessage = "Hello! This is regarding your vehicle insurance renewal. Please call us back for more details."
-    const whatsappUrl = `https://wa.me/${customer.phone_number.replace(/\D/g, '')}?text=${encodeURIComponent(defaultMessage)}`
+    const message = getInsuranceMessage(customer)
+    const whatsappUrl = `https://wa.me/${customer.phone_number.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
     handleActionComplete(customer.id, 'whatsapp')
   }
