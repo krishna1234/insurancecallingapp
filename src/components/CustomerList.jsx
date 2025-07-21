@@ -62,7 +62,11 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
 
   const handleWhatsApp = (customer) => {
     const message = getWhatsAppMessage(customer)
-    const whatsappUrl = `https://wa.me/${customer.phone_number.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`
+    let phone = customer.phone_number.replace(/\D/g, '')
+    if (!phone.startsWith('91')) {
+      phone = '91' + phone
+    }
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
     handleActionComplete(customer.id, 'whatsapp')
   }
