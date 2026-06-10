@@ -8,29 +8,15 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [initialized, setInitialized] = useState(false)
 
   useEffect(() => {
-    // First, check for initial session (for SSR/refresh)
-    const checkSession = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession()
-        setUser(session?.user ?? null)
-        setInitialized(true)
-        setLoading(false)
-      } catch (error) {
-        console.error('Error checking session:', error)
-        setInitialized(true)
-        setLoading(false)
-      }
-    }
-    
-    checkSession()
-    
-    // Then listen for auth changes
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
-      if (!initialized) setInitialized(true)
       setLoading(false)
     })
 
