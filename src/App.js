@@ -3,10 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './contexts/AuthContext'
 import Login from './components/Login'
 import Dashboard from './components/DashboardNew'
-import SingleCustomerView from './components/SingleCustomerViewNew'
+import CustomerListPage from './components/CustomerListPage'
 import PrivateRoute from './components/PrivateRoute'
 import PublicRoute from './components/PublicRoute'
-import CustomerListPage from './components/CustomerListPage'
 import './index.css'
 
 function App() {

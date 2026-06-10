@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Phone, MessageSquare, MessageCircle, FileText, CheckCircle, Clock, User, Car, Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
+import ContactStatusDropdown from './ContactStatusDropdown'
+import { isContactStatusComplete } from '../constants/contactStatus'
 
 const CustomerList = ({ customers, onCustomerUpdate }) => {
   const [selectedCustomer, setSelectedCustomer] = useState(null)
@@ -39,6 +41,19 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
         : customer
     )
     onCustomerUpdate(updatedCustomers)
+  }
+
+  const handleContactStatusChange = (customerId, contactStatus, customContactStatus = '') => {
+    const updatedCustomers = customers.map(customer =>
+      customer.id === customerId
+        ? { ...customer, contactStatus, customContactStatus }
+        : customer
+    )
+    onCustomerUpdate(updatedCustomers)
+
+    if (selectedCustomer?.id === customerId) {
+      setSelectedCustomer((prev) => ({ ...prev, contactStatus, customContactStatus }))
+    }
   }
 
   const handleCall = (customer) => {
@@ -104,14 +119,23 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
 
   const currentCustomer = filteredCustomers[currentIndex]
 
-  // Check if at least one action is done (not requiring all actions to be completed)
   const atLeastOneActionDone = currentCustomer && currentCustomer.actionsCompleted &&
     (currentCustomer.actionsCompleted.called ||
     currentCustomer.actionsCompleted.sms ||
     currentCustomer.actionsCompleted.whatsapp)
 
+  const hasContactStatus = currentCustomer && isContactStatusComplete(currentCustomer)
+  const canGoToNext = atLeastOneActionDone && hasContactStatus
+
+  const getProceedMessage = () => {
+    const missing = []
+    if (!atLeastOneActionDone) missing.push('complete at least one action')
+    if (!hasContactStatus) missing.push('select a status')
+    return `Please ${missing.join(' and ')} to proceed to the next customer`
+  }
+
   const goToNext = () => {
-    if (currentIndex < filteredCustomers.length - 1 && atLeastOneActionDone) {
+    if (currentIndex < filteredCustomers.length - 1 && canGoToNext) {
       setCurrentIndex(currentIndex + 1)
     }
   }
@@ -157,10 +181,10 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
         <div className="card-body">
           {/* Navigation Controls */}
           <div className="d-flex justify-content-between align-items-center mb-4">
-            {!atLeastOneActionDone && (
-              <div className="position-absolute top-0 start-50 translate-middle-x mt-2">
+            {!canGoToNext && currentIndex < filteredCustomers.length - 1 && (
+              <div className="position-absolute top-0 start-50 translate-middle-x mt-2 w-100 text-center px-2">
                 <div className="alert alert-warning py-1 px-3 d-inline-block shadow-sm" role="alert">
-                  <small>Complete at least one action to proceed to next customer</small>
+                  <small>{getProceedMessage()}</small>
                 </div>
               </div>
             )}
@@ -185,8 +209,8 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
 
             <button
               onClick={goToNext}
-              disabled={currentIndex === filteredCustomers.length - 1 || !atLeastOneActionDone}
-              className={`btn ${atLeastOneActionDone ? 'btn-primary' : 'btn-outline-secondary'} d-flex align-items-center`}
+              disabled={currentIndex === filteredCustomers.length - 1 || !canGoToNext}
+              className={`btn ${canGoToNext ? 'btn-primary' : 'btn-outline-secondary'} d-flex align-items-center`}
             >
               <span className="d-none d-sm-inline">Next</span>
               <ChevronRight size={20} className="ms-1" />
@@ -237,6 +261,18 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
                     <span className="ms-2 fw-medium">
                       {getStatusText(currentCustomer.status)}
                     </span>
+                  </div>
+
+                  {/* Status Dropdown - above Notes */}
+                  <div className="mb-3">
+                    <ContactStatusDropdown
+                      contactStatus={currentCustomer.contactStatus || ''}
+                      customContactStatus={currentCustomer.customContactStatus || ''}
+                      onChange={(status, customStatus) =>
+                        handleContactStatusChange(currentCustomer.id, status, customStatus)
+                      }
+                      required
+                    />
                   </div>
 
                   {/* Action Buttons */}
@@ -304,7 +340,7 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">
-                  Add Notes for {selectedCustomer.ownerName}
+                  Status & Notes for {selectedCustomer.ownerName}
                 </h5>
                 <button
                   type="button"
@@ -313,16 +349,34 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
                 ></button>
               </div>
               <div className="modal-body">
-                <textarea
-                  value={selectedCustomer.notes}
-                  onChange={(e) => {
-                    const updatedCustomer = { ...selectedCustomer, notes: e.target.value }
+                <ContactStatusDropdown
+                  contactStatus={selectedCustomer.contactStatus || ''}
+                  customContactStatus={selectedCustomer.customContactStatus || ''}
+                  onChange={(status, customStatus) => {
+                    const updatedCustomer = {
+                      ...selectedCustomer,
+                      contactStatus: status,
+                      customContactStatus: customStatus,
+                    }
                     setSelectedCustomer(updatedCustomer)
+                    handleContactStatusChange(selectedCustomer.id, status, customStatus)
                   }}
-                  className="form-control"
-                  rows="4"
-                  placeholder="Add notes about this customer..."
+                  size="sm"
                 />
+
+                <div className="mt-3">
+                  <label className="form-label fw-semibold">Notes</label>
+                  <textarea
+                    value={selectedCustomer.notes || ''}
+                    onChange={(e) => {
+                      const updatedCustomer = { ...selectedCustomer, notes: e.target.value }
+                      setSelectedCustomer(updatedCustomer)
+                    }}
+                    className="form-control"
+                    rows="4"
+                    placeholder="Add notes about this customer..."
+                  />
+                </div>
               </div>
               <div className="modal-footer">
                 <button
@@ -340,7 +394,7 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
                     setSelectedCustomer(null)
                   }}
                 >
-                  Save Notes
+                  Save
                 </button>
               </div>
             </div>

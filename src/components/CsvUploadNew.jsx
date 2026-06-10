@@ -38,6 +38,8 @@ const CsvUploadNew = ({ onCustomersUpload, onDeleteCsv, csvFileName, onUploadCom
               reg_date: row.reg_date || row['Reg Date'] || row['reg date'] || row['REG DATE'] || row['Registration Date'] || '',
               vehicleInsuranceUpto: row.vehicleInsuranceUpto || row['Vehicle Insurance Upto'] || row['vehicle insurance upto'] || row['VEHICLE INSURANCE UPTO'] || row['Insurance'] || row['insurance'] || '',
               status: 'pending',
+              contactStatus: '',
+              customContactStatus: '',
               notes: '',
               actionsCompleted: {
                 called: false,
