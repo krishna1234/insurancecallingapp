@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CustomerNavigation from './CustomerNavigation';
 import { Phone, MessageSquare, MessageCircle, FileText, CheckCircle, Clock, User, Car, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { generateRenewalMessage, getWhatsAppUrl, getSmsUrl } from "../utils/messageGenerator";
 
 const SingleCustomerView = () => {
   const [customers, setCustomers] = useState([]);
@@ -62,15 +63,14 @@ const SingleCustomerView = () => {
   };
 
   const handleSMS = (customer) => {
-    const defaultMessage = "Hello! This is regarding your vehicle insurance renewal. Please call us back for more details.";
-    window.open(`sms:${customer.phone_number}?body=${encodeURIComponent(defaultMessage)}`, '_self');
+    const url = getSmsUrl(customer);
+    window.open(url, '_self');
     handleActionComplete(customer.id, 'sms');
   };
 
   const handleWhatsApp = (customer) => {
-    const defaultMessage = "Hello! This is regarding your vehicle insurance renewal. Please call us back for more details.";
-    const whatsappUrl = `https://wa.me/${customer.phone_number.replace(/\D/g, '')}?text=${encodeURIComponent(defaultMessage)}`;
-    window.open(whatsappUrl, '_blank');
+    const url = getWhatsAppUrl(customer);
+    window.open(url, '_blank');
     handleActionComplete(customer.id, 'whatsapp');
   };
 

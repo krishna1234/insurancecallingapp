@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Phone, MessageSquare, MessageCircle, FileText, CheckCircle, Clock, User, Car, ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
 import ContactStatusDropdown from './ContactStatusDropdown';
 import { CONTACT_STATUS_OPTIONS } from '../constants/contactStatus';
+import { generateRenewalMessage, getWhatsAppUrl, getSmsUrl } from '../utils/messageGenerator';
 
 const FILTER_LABELS = {
   all: 'All Customers',
@@ -68,13 +69,13 @@ const SingleCustomerViewNew = () => {
 
   const handleCall = (c) => { window.open(`tel:${c.phone_number}`, '_self'); handleActionComplete(c.id, 'called'); };
   const handleSMS = (c) => {
-    const msg = "Hello! This is regarding your vehicle insurance renewal. Please call us back for more details.";
-    window.open(`sms:${c.phone_number}?body=${encodeURIComponent(msg)}`, '_self');
+    const url = getSmsUrl(c);
+    window.open(url, '_self');
     handleActionComplete(c.id, 'sms');
   };
   const handleWhatsApp = (c) => {
-    const msg = "Hello! This is regarding your vehicle insurance renewal. Please call us back for more details.";
-    window.open(`https://wa.me/${c.phone_number.replace(/\D/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
+    const url = getWhatsAppUrl(c);
+    window.open(url, '_blank');
     handleActionComplete(c.id, 'whatsapp');
   };
 

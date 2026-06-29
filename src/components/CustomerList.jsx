@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import ContactStatusDropdown from "./ContactStatusDropdown";
 import { isContactStatusComplete } from "../constants/contactStatus";
+import { getWhatsAppUrl, getSmsUrl } from "../utils/messageGenerator";
 
 const CustomerList = ({ customers, onCustomerUpdate }) => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -81,33 +82,15 @@ const CustomerList = ({ customers, onCustomerUpdate }) => {
     handleActionComplete(customer.id, "called");
   };
 
-  const getInsuranceMessage = (customer) => {
-    return `Dear ${customer.ownerName}, your vehicle (${customer.make} ${customer.model}, Reg: ${customer.vehicle_number}) insurance is expiring on ${customer.vehicleInsuranceUpto}. Please contact us to renew your policy and stay protected. - Insurance Team`;
-  };
-
-  const getWhatsAppMessage = (customer) => {
-    return `Dear ${customer.ownerName}, your vehicle (${customer.make} ${customer.model}, Reg: ${customer.vehicle_number}) insurance is expiring on ${customer.vehicleInsuranceUpto}. Please contact us to renew your policy and stay protected. Also, kindly share RC copy, Insurance Copy, Aadhaar card and Pan card. - Insurance Team`;
-  };
-
   const handleSMS = (customer) => {
-    const message = getInsuranceMessage(customer);
-    window.open(
-      `sms:${customer.phone_number}?body=${encodeURIComponent(message)}`,
-      "_self",
-    );
+    const url = getSmsUrl(customer);
+    window.open(url, "_self");
     handleActionComplete(customer.id, "sms");
   };
 
   const handleWhatsApp = (customer) => {
-    const message = getWhatsAppMessage(customer);
-    let phone = customer.phone_number.replace(/\D/g, "");
-    if (!phone.startsWith("91")) {
-      phone = "91" + phone;
-    }
-    const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(
-      message,
-    )}`;
-    window.open(whatsappUrl, "_blank");
+    const url = getWhatsAppUrl(customer);
+    window.open(url, "_blank");
     handleActionComplete(customer.id, "whatsapp");
   };
 
