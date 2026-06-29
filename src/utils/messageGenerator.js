@@ -49,9 +49,9 @@ function substitute(text, customer) {
   const expiry = (vehicleInsuranceUpto || "").trim();
 
   let result = text
-    .replace(/\{owner\}/g, `**${name}**`)
-    .replace(/\{vehicle\}/g, `**${vehicle || "your vehicle"}**`)
-    .replace(/\{expiryDate\}/g, `**${expiry || "soon"}**`);
+    .replace(/\{owner\}/g, `${name}`)
+    .replace(/\{vehicle\}/g, `${vehicle || "your vehicle"}`)
+    .replace(/\{expiryDate\}/g, `${expiry || "soon"}`);
 
   if (makeModel) {
     result = result.replace(/\{make\} \{model\}/g, makeModel).replace(/\{make\}/g, makeModel);
